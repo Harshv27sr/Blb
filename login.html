@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -446,16 +444,16 @@
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="index.jsp">Home</a></li>
-                        <li><a href="eligibility.jsp">Eligibility</a></li>
-                        <li><a href="camps.jsp">Camps</a></li>
-                        <li><a href="credits.jsp">Credits</a></li>
-                        <li><a href="certificate.jsp">Certificate</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="eligibility.html">Eligibility</a></li>
+                        <li><a href="camps.html">Camps</a></li>
+                        <li><a href="credits.html">Credits</a></li>
+                        <li><a href="certificate.html">Certificate</a></li>
                     </ul>
                 </nav>
                 <div class="auth-buttons">
-                    <a href="login.jsp" class="btn btn-login active">Login</a>
-                    <a href="register.jsp" class="btn btn-register">Register</a>
+                    <a href="login.html" class="btn btn-login active">Login</a>
+                    <a href="register.html" class="btn btn-register">Register</a>
                 </div>
             </div>
         </div>
@@ -511,7 +509,7 @@
                     </form>
 
                     <div class="register-link">
-                        <p>Don't have an account? <a href="register.jsp">Create an account</a></p>
+                        <p>Don't have an account? <a href="register.html">Create an account</a></p>
                     </div>
                 </div>
             </div>
@@ -535,10 +533,10 @@
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="index.jsp">Home</a></li>
-                        <li><a href="eligibility.jsp">Eligibility Check</a></li>
-                        <li><a href="camps.jsp">Donation Camps</a></li>
-                        <li><a href="credits.jsp">Blood Credits</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="eligibility.html">Eligibility Check</a></li>
+                        <li><a href="camps.html">Donation Camps</a></li>
+                        <li><a href="credits.html">Blood Credits</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -604,23 +602,14 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
         return;
     }
 
-    fetch("login", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === "success") {
-            alert("Login successful!");
-            window.location.href = data.redirect;
-        } else {
-            alert(data.message);
-        }
-    })
-    .catch(error => {
-        alert("Server error: " + error);
-    });
+    // For demo purpose - redirect to dashboard on successful login
+    // In real application, this would connect to backend
+    if (validatePIEMREmail(email) && password.length >= 6) {
+        alert("Login successful! Redirecting to dashboard...");
+        window.location.href = "dashboard.html";
+    } else {
+        alert("Invalid credentials. Please try again.");
+    }
 });
 
 // PIEMR domain check
