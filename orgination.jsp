@@ -1,0 +1,1833 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%> 	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization - BloodBond</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #c20c0c;
+            --dark-red: #8a0a0a;
+            --light-red: #ff4d4d;
+            --light-bg: #fff5f5;
+            --text-dark: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --border-light: #e0e0e0;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-red);
+            color: var(--white);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .desktop-nav {
+            display: flex;
+        }
+
+        .desktop-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .desktop-nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .desktop-nav a:hover {
+            background-color: var(--dark-red);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-register {
+            background-color: var(--white);
+            color: var(--primary-red);
+        }
+
+        .btn-login:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-register:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .offcanvas {
+            background-color: var(--primary-red);
+            color: var(--white);
+        }
+
+        .offcanvas-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+        }
+
+        .offcanvas-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .offcanvas-body {
+            padding: 20px;
+        }
+
+        .mobile-nav {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .mobile-nav li {
+            margin-bottom: 10px;
+        }
+
+        .mobile-nav a {
+            color: var(--white);
+            text-decoration: none;
+            display: block;
+            padding: 12px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .mobile-nav a:hover {
+            background-color: var(--dark-red);
+        }
+
+        /* Credit Rule Section */
+        .credit-rule-section {
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            color: var(--white);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(194, 12, 12, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .credit-rule-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+        }
+
+        .credit-rule-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .credit-rule-icon {
+            font-size: 28px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .credit-rule-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .credit-rule-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .rule-steps {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .rule-step {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .rule-step:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .step-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .step-description {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .rule-note {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--warning);
+        }
+
+        .rule-note p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Organization Section */
+        .organization-section {
+            flex: 1;
+            padding: 40px 0;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            color: var(--primary-red);
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .org-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .org-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .org-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .org-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .org-card-title {
+            font-size: 22px;
+            color: var(--primary-red);
+        }
+
+        .org-card-body {
+            margin-bottom: 20px;
+        }
+
+        .org-info-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .org-info-label {
+            font-weight: 600;
+            width: 150px;
+            color: var(--text-dark);
+        }
+
+        .org-info-value {
+            color: var(--text-light);
+        }
+
+        .org-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .btn-org {
+            background-color: var(--primary-red);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-org:hover {
+            background-color: var(--dark-red);
+        }
+
+        .btn-org-outline {
+            background-color: transparent;
+            color: var(--primary-red);
+            border: 2px solid var(--primary-red);
+        }
+
+        .btn-org-outline:hover {
+            background-color: var(--light-bg);
+        }
+
+        /* Camp Section */
+        .camp-section {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: var(--primary-red);
+        }
+
+        .camp-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .camp-card {
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .camp-card:hover {
+            border-color: var(--primary-red);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .camp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .camp-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .camp-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .status-upcoming {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .status-completed {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+        }
+
+        .camp-details {
+            margin-bottom: 15px;
+        }
+
+        .camp-detail-item {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .camp-detail-label {
+            font-weight: 600;
+            width: 80px;
+            color: var(--text-dark);
+        }
+
+        .camp-detail-value {
+            color: var(--text-light);
+        }
+
+        .camp-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: var(--white);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .modal-title {
+            font-size: 22px;
+            color: var(--primary-red);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-red);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(194, 12, 12, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        .toast {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 350px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        .toast.success .toast-icon {
+            color: var(--success);
+        }
+
+        .toast.error .toast-icon {
+            color: var(--primary-red);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-red);
+            color: var(--white);
+            padding: 40px 0 20px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--light-red);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary-red);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .org-container {
+                grid-template-columns: 1fr;
+            }
+
+            .camp-list {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .rule-steps {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .org-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .toast-container {
+                left: 20px;
+                right: 20px;
+                top: 80px;
+            }
+
+            .toast {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tint"></i>
+                    <h1>BloodBond</h1>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav">
+                    <ul>
+                        <li><a href="index.jsp">Home</a></li>
+                        <li><a href="camps.jsp">Camps</a></li>
+                        <li><a href="credits.jsp">Credits</a></li>
+                        <li><a href="certificate.jsp">Certificate</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="login.jsp" class="btn btn-login">Login</a>
+                    <a href="register.jsp" class="btn btn-register">Register</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
+                    aria-controls="offcanvasMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Offcanvas Menu for Mobile (Only navigation links) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <div class="offcanvas-title" id="offcanvasMenuLabel">
+                <i class="fas fa-tint"></i>
+                <h5 class="mb-0">BloodBond</h5>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="mobile-nav">
+                <li><a href="index.jsp">Home</a></li>
+                <li><a href="camps.jsp">Camps</a></li>
+                <li><a href="credits.jsp">Credits</a></li>
+                <li><a href="certificate.jsp">Certificate</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Organization Section -->
+    <section class="organization-section">
+        <div class="container">
+            <div class="page-header">
+                <h2>Organization Management</h2>
+                <p>Manage your organization profile, blood donation camps, and track your impact on the community</p>
+            </div>
+
+            <!-- Credit Rule Section -->
+            <div class="credit-rule-section">
+                <div class="credit-rule-header">
+                    <div class="credit-rule-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="credit-rule-title">Blood Credit System</h3>
+                </div>
+                <div class="credit-rule-content">
+                    <div class="rule-steps">
+                        <div class="rule-step">
+                            <i class="fas fa-hand-holding-heart step-icon"></i>
+                            <div class="step-title">Donate Blood</div>
+                            <div class="step-description">Contribute to save lives at our organization</div>
+                        </div>
+                        <div class="rule-step">
+                            <i class="fas fa-coins step-icon"></i>
+                            <div class="step-title">Earn Credits</div>
+                            <div class="step-description">Receive credit points for your donation</div>
+                        </div>
+                        <div class="rule-step">
+                            <i class="fas fa-exchange-alt step-icon"></i>
+                            <div class="step-title">Use Credits</div>
+                            <div class="step-description">Redeem credits when you need blood</div>
+                        </div>
+                    </div>
+                    <div class="rule-note">
+                        <p><i class="fas fa-info-circle"></i> <strong>Important Rule:</strong> Credits earned at this organization can only be used to request blood from the same organization. This ensures a trusted and reliable blood supply within our community.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Organization Overview -->
+            <div class="org-container">
+                <div class="org-card">
+                    <div class="org-card-header">
+                        <h3 class="org-card-title">Organization Profile</h3>
+                        <button class="btn-org-outline" id="editOrgBtn">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </div>
+                    <div class="org-card-body" id="orgProfileContent">
+                        <!-- Dynamic content will be inserted here -->
+                    </div>
+                    <div class="org-stats" id="orgStats">
+                        <!-- Dynamic stats will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="org-card">
+                    <div class="org-card-header">
+                        <h3 class="org-card-title">Quick Actions</h3>
+                    </div>
+                    <div class="org-card-body">
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <button class="btn-org" id="createCampBtn">
+                                <i class="fas fa-plus"></i> Create New Camp
+                            </button>
+                            <button class="btn-org-outline" id="viewAnalyticsBtn">
+                                <i class="fas fa-chart-bar"></i> View Analytics
+                            </button>
+                            <button class="btn-org-outline" id="generateReportBtn">
+                                <i class="fas fa-file-export"></i> Generate Report
+                            </button>
+                            <button class="btn-org-outline" id="manageVolunteersBtn">
+                                <i class="fas fa-users"></i> Manage Volunteers
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Camp Management Section -->
+            <div class="camp-section">
+                <div class="section-header">
+                    <h3 class="section-title">Blood Donation Camps</h3>
+                    <button class="btn-org" id="addCampBtn">
+                        <i class="fas fa-plus"></i> Add New Camp
+                    </button>
+                </div>
+
+                <div class="camp-list" id="campList">
+                    <!-- Dynamic camp cards will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Organization Edit Modal -->
+    <div class="modal-overlay" id="orgModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Organization Profile</h3>
+                <button class="modal-close" id="closeOrgModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="orgForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orgId">Organization ID</label>
+                            <input type="text" id="orgId" class="form-control" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="orgType">Organization Type</label>
+                            <select id="orgType" class="form-control" required>
+                                <option value="medical">Medical Institution</option>
+                                <option value="non-medical">Non-Medical Organization</option>
+                                <option value="educational">Educational Institution</option>
+                                <option value="corporate">Corporate</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orgName">Organization Name</label>
+                            <input type="text" id="orgName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="orgEmail">Contact Email</label>
+                            <input type="email" id="orgEmail" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orgPhone">Phone Number</label>
+                            <input type="tel" id="orgPhone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="orgWebsite">Website</label>
+                            <input type="url" id="orgWebsite" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="orgAddress">Address</label>
+                        <input type="text" id="orgAddress" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="orgDescription">Description</label>
+                        <textarea id="orgDescription" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-org-outline" id="cancelOrgBtn">Cancel</button>
+                        <button type="submit" class="btn-org">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camp Creation Modal -->
+    <div class="modal-overlay" id="campModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Camp</h3>
+                <button class="modal-close" id="closeCampModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="campForm">
+                    <div class="form-group">
+                        <label for="campName">Camp Name</label>
+                        <input type="text" id="campName" class="form-control" placeholder="Enter camp name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="campDate">Date</label>
+                            <input type="date" id="campDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campTime">Time</label>
+                            <input type="time" id="campTime" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="campLocation">Location</label>
+                        <input type="text" id="campLocation" class="form-control" placeholder="Enter camp location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="campDescription">Description</label>
+                        <textarea id="campDescription" class="form-control" rows="3" placeholder="Enter camp description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="campCapacity">Expected Capacity</label>
+                        <input type="number" id="campCapacity" class="form-control" placeholder="Enter expected number of donars" min="1">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-org-outline" id="cancelCampBtn">Cancel</button>
+                        <button type="submit" class="btn-org">Create Camp</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camp Edit Modal -->
+    <div class="modal-overlay" id="campEditModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Camp</h3>
+                <button class="modal-close" id="closeCampEditModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="campEditForm">
+                    <input type="hidden" id="editCampId">
+                    <div class="form-group">
+                        <label for="editCampName">Camp Name</label>
+                        <input type="text" id="editCampName" class="form-control" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editCampDate">Date</label>
+                            <input type="date" id="editCampDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editCampTime">Time</label>
+                            <input type="time" id="editCampTime" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCampLocation">Location</label>
+                        <input type="text" id="editCampLocation" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCampDescription">Description</label>
+                        <textarea id="editCampDescription" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCampCapacity">Expected Capacity</label>
+                        <input type="number" id="editCampCapacity" class="form-control" min="1">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-org-outline" id="cancelCampEditBtn">Cancel</button>
+                        <button type="submit" class="btn-org">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>BloodBond</h3>
+                    <p>Connecting donars, hospitals, and recipients to ensure no one dies due to lack of blood.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.jsp">Home</a></li>
+                        <li><a href="camps.jsp">Camps</a></li>
+                        <li><a href="credits.jsp">Credits</a></li>
+                        <li><a href="certificate.jsp">Certificate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Donation Process</a></li>
+                        <li><a href="#">Blood Types</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Health Street, Medical City</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+                        <li><i class="fas fa-envelope"></i> info@bloodbond.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 BloodBond. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Data Models
+        class Organization {
+            constructor(id, name, type, email, phone, website, address, description) {
+                this.id = id;
+                this.name = name;
+                this.type = type;
+                this.email = email;
+                this.phone = phone;
+                this.website = website;
+                this.address = address;
+                this.description = description;
+                this.stats = {
+                    campsOrganized: 0,
+                    totalDonations: 0,
+                    livesImpacted: 0
+                };
+            }
+        }
+
+        class Camp {
+            constructor(id, name, date, time, location, description, capacity, organizationId) {
+                this.id = id;
+                this.name = name;
+                this.date = date;
+                this.time = time;
+                this.location = location;
+                this.description = description;
+                this.capacity = capacity;
+                this.organizationId = organizationId;
+                this.registeredDonars = 0;
+                this.status = this.calculateStatus();
+            }
+
+            calculateStatus() {
+                const today = new Date();
+                const campDate = new Date(this.date);
+                
+                if (campDate < today) {
+                    return 'completed';
+                } else if (campDate.toDateString() === today.toDateString()) {
+                    return 'active';
+                } else {
+                    return 'upcoming';
+                }
+            }
+
+            getStatusText() {
+                const statusMap = {
+                    'active': 'Active',
+                    'upcoming': 'Upcoming',
+                    'completed': 'Completed'
+                };
+                return statusMap[this.status];
+            }
+
+            getStatusClass() {
+                const classMap = {
+                    'active': 'status-active',
+                    'upcoming': 'status-upcoming',
+                    'completed': 'status-completed'
+                };
+                return classMap[this.status];
+            }
+        }
+
+        // Data Storage (Replace with API calls in production)
+        class DataService {
+            constructor() {
+                this.organizations = JSON.parse(localStorage.getItem('organizations')) || [];
+                this.camps = JSON.parse(localStorage.getItem('camps')) || [];
+                
+                // Initialize with sample data if empty
+                if (this.organizations.length === 0) {
+                    this.initializeSampleData();
+                }
+            }
+
+            initializeSampleData() {
+                // Create sample organization
+                const sampleOrg = new Organization(
+                    'ORG-2023-001',
+                    'PIEMR Medical Society',
+                    'educational',
+                    'contact@piemr.edu.in',
+                    '+91 98765 43210',
+                    'https://piemr.edu.in',
+                    'PIEMR Campus, Indore, MP',
+                    'A leading educational institution promoting blood donation awareness'
+                );
+                
+                sampleOrg.stats = {
+                    campsOrganized: 12,
+                    totalDonations: 347,
+                    livesImpacted: 1041
+                };
+
+                this.organizations.push(sampleOrg);
+                this.saveOrganizations();
+
+                // Create sample camps
+                const today = new Date();
+                const tomorrow = new Date(today);
+                tomorrow.setDate(today.getDate() + 1);
+                
+                const nextWeek = new Date(today);
+                nextWeek.setDate(today.getDate() + 7);
+                
+                const lastWeek = new Date(today);
+                lastWeek.setDate(today.getDate() - 7);
+
+                const sampleCamps = [
+                    new Camp(
+                        'CAMP-001',
+                        'Annual Blood Donation Drive',
+                        today.toISOString().split('T')[0],
+                        '10:00',
+                        'PIEMR Main Campus',
+                        'Annual blood donation drive to support local hospitals',
+                        100,
+                        'ORG-2023-001'
+                    ),
+                    new Camp(
+                        'CAMP-002',
+                        'Emergency Blood Camp',
+                        lastWeek.toISOString().split('T')[0],
+                        '14:00',
+                        'City Hospital',
+                        'Emergency blood donation camp for critical patients',
+                        50,
+                        'ORG-2023-001'
+                    ),
+                    new Camp(
+                        'CAMP-003',
+                        'Winter Blood Drive',
+                        nextWeek.toISOString().split('T')[0],
+                        '11:00',
+                        'Community Center',
+                        'Winter blood donation drive to prepare for holiday season',
+                        80,
+                        'ORG-2023-001'
+                    )
+                ];
+
+                sampleCamps[0].registeredDonars = 45;
+                sampleCamps[1].registeredDonars = 32;
+                sampleCamps[2].registeredDonars = 18;
+
+                this.camps = sampleCamps;
+                this.saveCamps();
+            }
+
+            getOrganization(id) {
+                return this.organizations.find(org => org.id === id);
+            }
+
+            saveOrganization(organization) {
+                const index = this.organizations.findIndex(org => org.id === organization.id);
+                if (index !== -1) {
+                    this.organizations[index] = organization;
+                } else {
+                    this.organizations.push(organization);
+                }
+                this.saveOrganizations();
+                return organization;
+            }
+
+            saveOrganizations() {
+                localStorage.setItem('organizations', JSON.stringify(this.organizations));
+            }
+
+            getCampsByOrganization(organizationId) {
+                return this.camps.filter(camp => camp.organizationId === organizationId);
+            }
+
+            saveCamp(camp) {
+                const index = this.camps.findIndex(c => c.id === camp.id);
+                if (index !== -1) {
+                    this.camps[index] = camp;
+                } else {
+                    // Generate new ID for new camp
+                    if (!camp.id) {
+                        camp.id = 'CAMP-' + Date.now();
+                    }
+                    this.camps.push(camp);
+                }
+                this.saveCamps();
+                return camp;
+            }
+
+            deleteCamp(campId) {
+                this.camps = this.camps.filter(camp => camp.id !== campId);
+                this.saveCamps();
+            }
+
+            saveCamps() {
+                localStorage.setItem('camps', JSON.stringify(this.camps));
+            }
+        }
+
+        // UI Controller
+        class OrganizationController {
+            constructor() {
+                this.dataService = new DataService();
+                this.currentOrganizationId = 'ORG-2023-001'; // In a real app, this would come from authentication
+                this.currentOrganization = null;
+                this.editingCamp = null;
+                
+                this.initializeEventListeners();
+                this.loadOrganizationData();
+                this.loadCamps();
+            }
+
+            initializeEventListeners() {
+                // Modal buttons
+                document.getElementById('editOrgBtn').addEventListener('click', () => this.openOrgModal());
+                document.getElementById('createCampBtn').addEventListener('click', () => this.openCampModal());
+                document.getElementById('addCampBtn').addEventListener('click', () => this.openCampModal());
+                
+                // Modal close buttons
+                document.getElementById('closeOrgModal').addEventListener('click', () => this.closeModals());
+                document.getElementById('closeCampModal').addEventListener('click', () => this.closeModals());
+                document.getElementById('closeCampEditModal').addEventListener('click', () => this.closeModals());
+                document.getElementById('cancelOrgBtn').addEventListener('click', () => this.closeModals());
+                document.getElementById('cancelCampBtn').addEventListener('click', () => this.closeModals());
+                document.getElementById('cancelCampEditBtn').addEventListener('click', () => this.closeModals());
+                
+                // Form submissions
+                document.getElementById('orgForm').addEventListener('submit', (e) => this.handleOrgSubmit(e));
+                document.getElementById('campForm').addEventListener('submit', (e) => this.handleCampSubmit(e));
+                document.getElementById('campEditForm').addEventListener('submit', (e) => this.handleCampEditSubmit(e));
+                
+                // Quick action buttons
+                document.getElementById('viewAnalyticsBtn').addEventListener('click', () => this.showToast('Analytics feature coming soon!', 'info'));
+                document.getElementById('generateReportBtn').addEventListener('click', () => this.showToast('Report generation feature coming soon!', 'info'));
+                document.getElementById('manageVolunteersBtn').addEventListener('click', () => this.showToast('Volunteer management feature coming soon!', 'info'));
+                
+                // Close modals when clicking outside
+                window.addEventListener('click', (e) => {
+                    if (e.target === document.getElementById('orgModal')) {
+                        this.closeModals();
+                    }
+                    if (e.target === document.getElementById('campModal')) {
+                        this.closeModals();
+                    }
+                    if (e.target === document.getElementById('campEditModal')) {
+                        this.closeModals();
+                    }
+                });
+
+                // Set minimum date for camp creation to today
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('campDate').min = today;
+                document.getElementById('editCampDate').min = today;
+            }
+
+            loadOrganizationData() {
+                this.currentOrganization = this.dataService.getOrganization(this.currentOrganizationId);
+                if (this.currentOrganization) {
+                    this.renderOrganizationProfile();
+                }
+            }
+
+            renderOrganizationProfile() {
+                const org = this.currentOrganization;
+                
+                // Render organization profile
+                const profileContent = document.getElementById('orgProfileContent');
+                profileContent.innerHTML = `
+                    <div class="org-info-item">
+                        <span class="org-info-label">Organization ID:</span>
+                        <span class="org-info-value">${org.id}</span>
+                    </div>
+                    <div class="org-info-item">
+                        <span class="org-info-label">Name:</span>
+                        <span class="org-info-value">${org.name}</span>
+                    </div>
+                    <div class="org-info-item">
+                        <span class="org-info-label">Type:</span>
+                        <span class="org-info-value">${this.getOrgTypeText(org.type)}</span>
+                    </div>
+                    <div class="org-info-item">
+                        <span class="org-info-label">Contact Email:</span>
+                        <span class="org-info-value">${org.email}</span>
+                    </div>
+                    <div class="org-info-item">
+                        <span class="org-info-label">Phone:</span>
+                        <span class="org-info-value">${org.phone}</span>
+                    </div>
+                    <div class="org-info-item">
+                        <span class="org-info-label">Website:</span>
+                        <span class="org-info-value">${org.website || 'N/A'}</span>
+                    </div>
+                    <div class="org-info-item">
+                        <span class="org-info-label">Address:</span>
+                        <span class="org-info-value">${org.address}</span>
+                    </div>
+                    ${org.description ? `
+                    <div class="org-info-item">
+                        <span class="org-info-label">Description:</span>
+                        <span class="org-info-value">${org.description}</span>
+                    </div>
+                    ` : ''}
+                `;
+                
+                // Render organization stats
+                const statsContent = document.getElementById('orgStats');
+                statsContent.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-value">${org.stats.campsOrganized}</div>
+                        <div class="stat-label">Camps Organized</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${org.stats.totalDonations}</div>
+                        <div class="stat-label">Total Donations</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${org.stats.livesImpacted}</div>
+                        <div class="stat-label">Lives Impacted</div>
+                    </div>
+                `;
+            }
+
+            getOrgTypeText(type) {
+                const typeMap = {
+                    'medical': 'Medical Institution',
+                    'non-medical': 'Non-Medical Organization',
+                    'educational': 'Educational Institution',
+                    'corporate': 'Corporate'
+                };
+                return typeMap[type] || type;
+            }
+
+            loadCamps() {
+                const camps = this.dataService.getCampsByOrganization(this.currentOrganizationId);
+                this.renderCamps(camps);
+            }
+
+            renderCamps(camps) {
+                const campList = document.getElementById('campList');
+                
+                if (camps.length === 0) {
+                    campList.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-light);">
+                            <i class="fas fa-calendar-times" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                            <h3>No Camps Found</h3>
+                            <p>You haven't created any blood donation camps yet.</p>
+                            <button class="btn-org" id="createFirstCampBtn" style="margin-top: 15px;">
+                                <i class="fas fa-plus"></i> Create Your First Camp
+                            </button>
+                        </div>
+                    `;
+                    
+                    document.getElementById('createFirstCampBtn').addEventListener('click', () => {
+                        this.openCampModal();
+                    });
+                    
+                    return;
+                }
+                
+                campList.innerHTML = camps.map(camp => `
+                    <div class="camp-card" data-camp-id="${camp.id}">
+                        <div class="camp-header">
+                            <h4 class="camp-name">${camp.name}</h4>
+                            <span class="camp-status ${camp.getStatusClass()}">${camp.getStatusText()}</span>
+                        </div>
+                        <div class="camp-details">
+                            <div class="camp-detail-item">
+                                <span class="camp-detail-label">Date:</span>
+                                <span class="camp-detail-value">${this.formatDate(camp.date)}</span>
+                            </div>
+                            <div class="camp-detail-item">
+                                <span class="camp-detail-label">Time:</span>
+                                <span class="camp-detail-value">${camp.time}</span>
+                            </div>
+                            <div class="camp-detail-item">
+                                <span class="camp-detail-label">Location:</span>
+                                <span class="camp-detail-value">${camp.location}</span>
+                            </div>
+                            <div class="camp-detail-item">
+                                <span class="camp-detail-label">${camp.status === 'completed' ? 'Donations:' : 'Donars:'}</span>
+                                <span class="camp-detail-value">${camp.status === 'completed' ? `${camp.registeredDonars} Units` : `${camp.registeredDonars} Registered`}</span>
+                            </div>
+                            ${camp.capacity ? `
+                            <div class="camp-detail-item">
+                                <span class="camp-detail-label">Capacity:</span>
+                                <span class="camp-detail-value">${camp.capacity} donars</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                        <div class="camp-actions">
+                            <button class="btn-org-outline view-camp-btn" style="padding: 8px 15px;">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn-org-outline edit-camp-btn" style="padding: 8px 15px;">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn-org-outline delete-camp-btn" style="padding: 8px 15px; background-color: var(--primary-red); color: white;">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Add event listeners to camp action buttons
+                document.querySelectorAll('.view-camp-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const campId = e.target.closest('.camp-card').dataset.campId;
+                        this.viewCamp(campId);
+                    });
+                });
+                
+                document.querySelectorAll('.edit-camp-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const campId = e.target.closest('.camp-card').dataset.campId;
+                        this.editCamp(campId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-camp-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const campId = e.target.closest('.camp-card').dataset.campId;
+                        this.deleteCamp(campId);
+                    });
+                });
+            }
+
+            formatDate(dateString) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return new Date(dateString).toLocaleDateString(undefined, options);
+            }
+
+            openOrgModal() {
+                const org = this.currentOrganization;
+                
+                document.getElementById('orgId').value = org.id;
+                document.getElementById('orgName').value = org.name;
+                document.getElementById('orgType').value = org.type;
+                document.getElementById('orgEmail').value = org.email;
+                document.getElementById('orgPhone').value = org.phone;
+                document.getElementById('orgWebsite').value = org.website || '';
+                document.getElementById('orgAddress').value = org.address;
+                document.getElementById('orgDescription').value = org.description || '';
+                
+                document.getElementById('orgModal').classList.add('active');
+            }
+
+            openCampModal() {
+                document.getElementById('campForm').reset();
+                document.getElementById('campModal').classList.add('active');
+                
+                // Set default date to tomorrow
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                document.getElementById('campDate').value = tomorrow.toISOString().split('T')[0];
+            }
+
+            closeModals() {
+                document.getElementById('orgModal').classList.remove('active');
+                document.getElementById('campModal').classList.remove('active');
+                document.getElementById('campEditModal').classList.remove('active');
+                this.editingCamp = null;
+            }
+
+            handleOrgSubmit(e) {
+                e.preventDefault();
+                
+                const orgData = {
+                    id: document.getElementById('orgId').value,
+                    name: document.getElementById('orgName').value,
+                    type: document.getElementById('orgType').value,
+                    email: document.getElementById('orgEmail').value,
+                    phone: document.getElementById('orgPhone').value,
+                    website: document.getElementById('orgWebsite').value,
+                    address: document.getElementById('orgAddress').value,
+                    description: document.getElementById('orgDescription').value
+                };
+                
+                // Preserve stats
+                orgData.stats = this.currentOrganization.stats;
+                
+                this.currentOrganization = this.dataService.saveOrganization(orgData);
+                this.renderOrganizationProfile();
+                this.closeModals();
+                
+                this.showToast('Organization profile updated successfully!', 'success');
+            }
+
+            handleCampSubmit(e) {
+                e.preventDefault();
+                
+                const campData = {
+                    name: document.getElementById('campName').value,
+                    date: document.getElementById('campDate').value,
+                    time: document.getElementById('campTime').value,
+                    location: document.getElementById('campLocation').value,
+                    description: document.getElementById('campDescription').value,
+                    capacity: document.getElementById('campCapacity').value ? parseInt(document.getElementById('campCapacity').value) : null,
+                    organizationId: this.currentOrganizationId
+                };
+                
+                const newCamp = new Camp(
+                    null, // ID will be generated
+                    campData.name,
+                    campData.date,
+                    campData.time,
+                    campData.location,
+                    campData.description,
+                    campData.capacity,
+                    campData.organizationId
+                );
+                
+                this.dataService.saveCamp(newCamp);
+                this.loadCamps();
+                this.closeModals();
+                
+                this.showToast(`Camp "${newCamp.name}" created successfully!`, 'success');
+                
+                // Update organization stats
+                this.currentOrganization.stats.campsOrganized += 1;
+                this.dataService.saveOrganization(this.currentOrganization);
+                this.renderOrganizationProfile();
+            }
+
+            handleCampEditSubmit(e) {
+                e.preventDefault();
+                
+                if (!this.editingCamp) return;
+                
+                const campData = {
+                    id: this.editingCamp.id,
+                    name: document.getElementById('editCampName').value,
+                    date: document.getElementById('editCampDate').value,
+                    time: document.getElementById('editCampTime').value,
+                    location: document.getElementById('editCampLocation').value,
+                    description: document.getElementById('editCampDescription').value,
+                    capacity: document.getElementById('editCampCapacity').value ? parseInt(document.getElementById('editCampCapacity').value) : null,
+                    organizationId: this.currentOrganizationId,
+                    registeredDonars: this.editingCamp.registeredDonars
+                };
+                
+                const updatedCamp = new Camp(
+                    campData.id,
+                    campData.name,
+                    campData.date,
+                    campData.time,
+                    campData.location,
+                    campData.description,
+                    campData.capacity,
+                    campData.organizationId
+                );
+                
+                updatedCamp.registeredDonars = campData.registeredDonars;
+                
+                this.dataService.saveCamp(updatedCamp);
+                this.loadCamps();
+                this.closeModals();
+                
+                this.showToast(`Camp "${updatedCamp.name}" updated successfully!`, 'success');
+            }
+
+            viewCamp(campId) {
+                const camp = this.dataService.camps.find(c => c.id === campId);
+                if (camp) {
+                    this.showToast(`Viewing details for camp: ${camp.name}`, 'info');
+                    // In a real app, you would navigate to a camp details page or open a details modal
+                }
+            }
+
+            editCamp(campId) {
+                this.editingCamp = this.dataService.camps.find(c => c.id === campId);
+                if (this.editingCamp) {
+                    document.getElementById('editCampId').value = this.editingCamp.id;
+                    document.getElementById('editCampName').value = this.editingCamp.name;
+                    document.getElementById('editCampDate').value = this.editingCamp.date;
+                    document.getElementById('editCampTime').value = this.editingCamp.time;
+                    document.getElementById('editCampLocation').value = this.editingCamp.location;
+                    document.getElementById('editCampDescription').value = this.editingCamp.description || '';
+                    document.getElementById('editCampCapacity').value = this.editingCamp.capacity || '';
+                    
+                    document.getElementById('campEditModal').classList.add('active');
+                }
+            }
+
+            deleteCamp(campId) {
+                const camp = this.dataService.camps.find(c => c.id === campId);
+                if (camp && confirm(`Are you sure you want to delete the camp "${camp.name}"?`)) {
+                    this.dataService.deleteCamp(campId);
+                    this.loadCamps();
+                    this.showToast(`Camp "${camp.name}" deleted successfully!`, 'success');
+                    
+                    // Update organization stats
+                    if (this.currentOrganization.stats.campsOrganized > 0) {
+                        this.currentOrganization.stats.campsOrganized -= 1;
+                        this.dataService.saveOrganization(this.currentOrganization);
+                        this.renderOrganizationProfile();
+                    }
+                }
+            }
+
+            showToast(message, type = 'info') {
+                const toastContainer = document.getElementById('toastContainer');
+                const toastId = 'toast-' + Date.now();
+                
+                const iconMap = {
+                    'success': 'fa-check-circle',
+                    'error': 'fa-exclamation-circle',
+                    'info': 'fa-info-circle',
+                    'warning': 'fa-exclamation-triangle'
+                };
+                
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.id = toastId;
+                toast.innerHTML = `
+                    <i class="fas ${iconMap[type]} toast-icon"></i>
+                    <div class="toast-content">
+                        <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                    <button class="toast-close" onclick="document.getElementById('${toastId}').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                // Show toast with animation
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 10);
+                
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.classList.remove('show');
+                        setTimeout(() => {
+                            if (toast.parentNode) {
+                                toast.parentNode.removeChild(toast);
+                            }
+                        }, 300);
+                    }
+                }, 5000);
+            }
+        }
+
+        // Initialize the application when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new OrganizationController();
+        });
+    </script>
+</body>
+</html>

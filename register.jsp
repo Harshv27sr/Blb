@@ -1,0 +1,1225 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - BloodBond PIEMR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #c20c0c;
+            --dark-red: #8a0a0a;
+            --light-red: #ff4d4d;
+            --light-bg: #fff5f5;
+            --text-dark: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --border-light: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary-red);
+            color: var(--white);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 28px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        nav a:hover {
+            background-color: var(--dark-red);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-login {
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+        
+        .btn-register {
+            background-color: var(--white);
+            color: var(--primary-red);
+        }
+        
+        .btn-login:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-register:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* Registration Section */
+        .register-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+        
+        .register-container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .register-image {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--white);
+        }
+        
+        .register-content {
+            flex: 1.2;
+            padding: 40px;
+            max-height: 800px;
+            overflow-y: auto;
+        }
+        
+        .register-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .register-image h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .register-image p {
+            text-align: center;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .benefits-list {
+            margin-top: 30px;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .register-form {
+            max-width: 100%;
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .register-header h2 {
+            color: var(--primary-red);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .register-header p {
+            color: var(--text-light);
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .section-title {
+            color: var(--primary-red);
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            font-size: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        
+        .form-group.required label:after {
+            content: ' *';
+            color: var(--primary-red);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-red);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(194, 12, 12, 0.1);
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+        
+        .form-hint {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+        
+        .email-domain-note {
+            background-color: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        /* College ID Verification */
+        .college-id-verification {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .college-id-upload {
+            border: 2px dashed var(--border-light);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        
+        .college-id-upload:hover {
+            border-color: var(--primary-red);
+        }
+        
+        .upload-icon {
+            font-size: 40px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        
+        .upload-text {
+            color: var(--text-light);
+        }
+        
+        .upload-text strong {
+            color: var(--primary-red);
+        }
+        
+        .accepted-formats {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+        
+        .file-preview {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-icon {
+            color: var(--primary-red);
+            font-size: 20px;
+        }
+        
+        .file-details {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 500;
+        }
+        
+        .file-size {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .remove-file {
+            background: none;
+            border: none;
+            color: var(--primary-red);
+            cursor: pointer;
+        }
+        
+        /* Terms and Conditions */
+        .terms-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .terms-group input {
+            margin-top: 3px;
+        }
+        
+        .terms-text {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .terms-text a {
+            color: var(--primary-red);
+            text-decoration: none;
+        }
+        
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn-register-submit {
+            background-color: var(--primary-red);
+            color: var(--white);
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+        
+        .btn-register-submit:hover {
+            background-color: var(--dark-red);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .login-link a {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .progress-steps:before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--border-light);
+            z-index: 1;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--white);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .step-active .step-number {
+            background-color: var(--primary-red);
+            border-color: var(--primary-red);
+            color: var(--white);
+        }
+        
+        .step-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .step-active .step-label {
+            color: var(--primary-red);
+            font-weight: 500;
+        }
+        
+        /* Eligibility Notice */
+        .eligibility-notice {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .eligibility-notice h5 {
+            color: #856404;
+            margin-bottom: 5px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-red);
+            color: var(--white);
+            padding: 40px 0 20px;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--light-red);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column a:hover {
+            color: var(--white);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary-red);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .register-container {
+                flex-direction: column;
+            }
+            
+            .register-image {
+                padding: 30px;
+            }
+            
+            .register-content {
+                padding: 30px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .progress-steps {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .progress-steps:before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tint"></i>
+                    <h1>BloodBond</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.jsp">Home</a></li>
+                        <li><a href="eligibility.jsp">Eligibility</a></li>
+                        <li><a href="camps.jsp">Camps</a></li>
+                        <li><a href="credits.jsp">Credits</a></li>
+                        <li><a href="certificate.jsp">Certificate</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="login.jsp" class="btn btn-login">Login</a>
+                    <a href="register.jsp" class="btn btn-register active">Register</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Registration Section -->
+    <section class="register-section">
+        <div class="register-container">
+            <div class="register-image">
+                <div class="register-image-content">
+                    <div class="register-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h2>PIEMR Blood Donation Program</h2>
+                    <p>This platform is exclusively for PIEMR students, professors, staff, and faculty. Register using your college email to become a life-saver in our community.</p>
+                    
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div>
+                                <strong>Track Your Donations</strong>
+                                <p>Keep record of all your blood donations</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div>
+                                <strong>Earn Blood Credits</strong>
+                                <p>Get credits for emergencies</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div>
+                                <strong>Digital Certificates</strong>
+                                <p>Receive certificates for each donation</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div>
+                                <strong>Emergency Alerts</strong>
+                                <p>Get notified when your blood type is needed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="register-content">
+                <div class="register-form">
+                    <div class="register-header">
+                        <h2>PIEMR Member Registration</h2>
+                        <p>Fill in your details to join our college blood donation program</p>
+                    </div>
+                    
+                    <!-- Eligibility Notice -->
+                    <div class="eligibility-notice">
+                        <h5><i class="fas fa-exclamation-triangle"></i> Eligibility Notice</h5>
+                        <p>After registration, you must complete the eligibility questionnaire to verify you can donate blood. Only eligible members will be allowed to schedule donations.</p>
+                    </div>
+                    
+                    <!-- Progress Steps -->
+                    <div class="progress-steps">
+                        <div class="progress-step step-active">
+                            <div class="step-number">1</div>
+                            <div class="step-label">Account</div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="step-number">2</div>
+                            <div class="step-label">Personal</div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="step-number">3</div>
+                            <div class="step-label">Medical</div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="step-number">4</div>
+                            <div class="step-label">Verify</div>
+                        </div>
+                    </div>
+                    
+                    <form id="registerForm" method="post" action="register" enctype="multipart/form-data">
+                        <!-- College Information -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-university"></i>
+                                College Information
+                            </h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group required">
+                                    <label for="memberType">Member Type</label>
+                                    <select id="memberType" name="memberType" class="form-control" required>
+                                        <option value="">Select Type</option>
+                                        <option value="student">Student</option>
+                                        <option value="professor">Professor</option>
+                                        <option value="faculty">Faculty</option>
+                                        <option value="staff">Staff</option>
+                                    </select>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="collegeId">College ID</label>
+                                    <input type="text" id="collegeId" name="collegeId" class="form-control" placeholder="Enter your college ID" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group required">
+                                <label for="department">Department</label>
+                                <input type="text" id="department" name="department" class="form-control" placeholder="Enter your department" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Account Information -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-user-circle"></i>
+                                Account Information
+                            </h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group required">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter your first name" required>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter your last name" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group required">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your college email" required>
+                                <div class="email-domain-note">
+                                    <i class="fas fa-info-circle"></i> Only @piemr.edu.in email addresses are allowed for registration.
+                                </div>
+                                <div class="form-hint">We'll send a verification code to this email</div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group required">
+                                    <label for="password">Password</label>
+                                    <div class="password-container">
+                                        <input type="password" id="password" name="password" class="form-control" placeholder="Create a password" required>
+                                        <button type="button" class="toggle-password" id="togglePassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-hint">Must be at least 8 characters with uppercase, lowercase, and number</div>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="confirmPassword">Confirm Password</label>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Personal Information -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-address-card"></i>
+                                Personal Information
+                            </h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group required">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" class="form-control" placeholder="Enter your phone number" required>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="birthDate">Date of Birth</label>
+                                    <input type="date" id="birthDate" name="birthDate" class="form-control" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group required">
+                                    <label for="gender">Gender</label>
+                                    <select id="gender" name="gender" class="form-control" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                        <option value="prefer-not-to-say">Prefer not to say</option>
+                                    </select>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="bloodGroup">Blood Group</label>
+                                    <select id="bloodGroup" name="bloodGroup" class="form-control" required>
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="unknown">Don't Know</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group required">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address" class="form-control" placeholder="Enter your street address" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group required">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" name="city" class="form-control" placeholder="Enter your city" required>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter pincode" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group required">
+                                <label for="state">State</label>
+                                <input type="text" id="state" name="state" class="form-control" placeholder="Enter your state" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Medical Information -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-heartbeat"></i>
+                                Medical Information
+                            </h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group required">
+                                    <label for="weight">Weight (kg)</label>
+                                    <input type="number" id="weight" name="weight" class="form-control" placeholder="Enter weight in kg" min="30" required>
+                                    <div class="form-hint">Minimum 50kg required for donation</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastDonation">Last Donation Date</label>
+                                    <input type="date" id="lastDonation" name="lastDonation" class="form-control">
+                                    <div class="form-hint">If applicable</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Any known medical conditions?</label>
+                                <div class="form-hint">Select all that apply</div>
+                                <div style="margin-top: 10px;">
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                                        <div>
+                                            <input type="checkbox" id="condition-none" name="medicalConditions" value="none">
+                                            <label for="condition-none">None</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="condition-diabetes" name="medicalConditions" value="diabetes">
+                                            <label for="condition-diabetes">Diabetes</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="condition-hypertension" name="medicalConditions" value="hypertension">
+                                            <label for="condition-hypertension">Hypertension</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="condition-heart" name="medicalConditions" value="heart">
+                                            <label for="condition-heart">Heart Disease</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="condition-other" name="medicalConditions" value="other">
+                                            <label for="condition-other">Other</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- College ID Verification -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-id-card"></i>
+                                College ID Verification
+                            </h3>
+                            
+                            <div class="college-id-verification">
+                                <p style="margin-bottom: 15px; font-weight: 500;">To verify your PIEMR affiliation, please upload a photo of your college ID card.</p>
+                                
+                                <input type="file" id="collegeIdFile" name="collegeIdFile" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                                
+                                <div class="college-id-upload" id="collegeIdUpload">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <div class="upload-text">
+                                        <strong>Click to upload</strong> your college ID card
+                                    </div>
+                                    <div class="accepted-formats">
+                                        Accepted: JPG, PNG, PDF (Max 5MB)
+                                    </div>
+                                </div>
+                                
+                                <div class="file-preview" id="filePreview">
+                                    <div class="file-info">
+                                        <div class="file-icon">
+                                            <i class="fas fa-file-image"></i>
+                                        </div>
+                                        <div class="file-details">
+                                            <div class="file-name" id="fileName">college-id.jpg</div>
+                                            <div class="file-size" id="fileSize">2.4 MB</div>
+                                        </div>
+                                        <button type="button" class="remove-file" id="removeFile">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Terms and Conditions -->
+                        <div class="terms-group">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <label for="terms" class="terms-text">
+                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. 
+                                I confirm that all information provided is accurate and I meet the eligibility criteria for blood donation.
+                                I verify that I am a current student, professor, staff, or faculty member of PIEMR.
+                            </label>
+                        </div>
+                        
+                        <div class="terms-group">
+                            <input type="checkbox" id="eligibilityCheck" name="eligibilityCheck" required>
+                            <label for="eligibilityCheck" class="terms-text">
+                                I understand that I must complete the eligibility questionnaire after registration and only eligible members can donate blood.
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-register-submit">Create Account</button>
+                        
+                        <div class="login-link">
+                            <p>Already have an account? <a href="login.jsp">Sign in here</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>BloodBond</h3>
+                    <p>Connecting PIEMR donars and recipients to ensure no one dies due to lack of blood.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.jsp">Home</a></li>
+                        <li><a href="eligibility.jsp">Eligibility Check</a></li>
+                        <li><a href="camps.jsp">Donation Camps</a></li>
+                        <li><a href="credits.jsp">Blood Credits</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Donation Process</a></li>
+                        <li><a href="#">Blood Types</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> PIEMR Campus, Indore</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-envelope"></i> bloodbond@piemr.edu.in</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 BloodBond. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // ================= FORM VALIDATION =================
+    function validateForm() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const weight = document.getElementById('weight').value;
+        const birthDate = document.getElementById('birthDate').value;
+        const collegeIdFile = document.getElementById('collegeIdFile').files[0];
+        const memberType = document.getElementById('memberType').value;
+        const collegeId = document.getElementById('collegeId').value;
+        const terms = document.getElementById('terms').checked;
+        const eligibilityCheck = document.getElementById('eligibilityCheck').checked;
+
+        if (!email.endsWith('@piemr.edu.in')) {
+            alert('Only @piemr.edu.in email addresses are allowed.');
+            return false;
+        }
+
+        if (!memberType) {
+            alert('Please select member type.');
+            return false;
+        }
+
+        if (!collegeId) {
+            alert('Please enter college ID.');
+            return false;
+        }
+
+        if (!collegeIdFile) {
+            alert('Please upload college ID card.');
+            return false;
+        }
+
+        if (!validatePasswordStrength(password)) {
+            alert('Password must be at least 8 characters with uppercase, lowercase and number.');
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match.');
+            return false;
+        }
+
+        const age = new Date().getFullYear() - new Date(birthDate).getFullYear();
+        if (age < 18) {
+            alert('You must be at least 18 years old.');
+            return false;
+        }
+
+        if (parseInt(weight) < 50) {
+            alert('Minimum weight is 50kg.');
+            return false;
+        }
+
+        if (!terms || !eligibilityCheck) {
+            alert('Please accept all terms & conditions.');
+            return false;
+        }
+
+        return true; // ✅ FORM WILL SUBMIT TO SERVLET
+    }
+
+    function validatePasswordStrength(password) {
+        return password.length >= 8 &&
+               /[A-Z]/.test(password) &&
+               /[a-z]/.test(password) &&
+               /\d/.test(password);
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' bytes';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    // ================= UI LOGIC =================
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Toggle password
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const p = document.getElementById('password');
+            p.type = p.type === 'password' ? 'text' : 'password';
+        });
+
+        // College ID upload preview
+        const fileInput = document.getElementById('collegeIdFile');
+        const filePreview = document.getElementById('filePreview');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const removeFileBtn = document.getElementById('removeFile');
+
+        document.getElementById('collegeIdUpload').onclick = () => fileInput.click();
+
+        fileInput.onchange = () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                fileInput.value = '';
+                return;
+            }
+
+            const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+            if (!validTypes.includes(file.type)) {
+                alert('Only JPG, PNG or PDF allowed.');
+                fileInput.value = '';
+                return;
+            }
+
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            filePreview.style.display = 'block';
+        };
+
+        removeFileBtn.onclick = () => {
+            fileInput.value = '';
+            filePreview.style.display = 'none';
+        };
+
+        // Medical conditions logic
+        const conditionNone = document.getElementById('condition-none');
+        const others = document.querySelectorAll('input[name="medicalConditions"]:not(#condition-none)');
+
+        conditionNone.onchange = () => {
+            others.forEach(cb => {
+                cb.disabled = conditionNone.checked;
+                if (conditionNone.checked) cb.checked = false;
+            });
+        };
+
+        others.forEach(cb => {
+            cb.onchange = () => {
+                if (cb.checked) {
+                    conditionNone.checked = false;
+                    conditionNone.disabled = true;
+                } else {
+                    const anyChecked = Array.from(others).some(o => o.checked);
+                    if (!anyChecked) {
+                        conditionNone.disabled = false;
+                        conditionNone.checked = true;
+                    }
+                }
+            };
+        });
+
+        // Date limits
+        const today = new Date();
+        document.getElementById('birthDate').max =
+            new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
+                .toISOString().split('T')[0];
+
+        document.getElementById('lastDonation').max =
+            today.toISOString().split('T')[0];
+    });
+</script>
+
+
+</body>
+</html>

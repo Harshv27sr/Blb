@@ -1,0 +1,1386 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eligibility - BloodBond</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #c20c0c;
+            --dark-red: #8a0a0a;
+            --light-red: #ff4d4d;
+            --light-bg: #fff5f5;
+            --text-dark: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --border-light: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-red);
+            color: var(--white);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .desktop-nav {
+            display: flex;
+        }
+
+        .desktop-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .desktop-nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .desktop-nav a:hover {
+            background-color: var(--dark-red);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-register {
+            background-color: var(--white);
+            color: var(--primary-red);
+        }
+
+        .btn-login:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-register:hover {
+            background-color: #f0f0f0;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .offcanvas {
+            background-color: var(--primary-red);
+            color: var(--white);
+        }
+
+        .offcanvas-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+        }
+
+        .offcanvas-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .offcanvas-body {
+            padding: 20px;
+        }
+
+        .mobile-nav {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .mobile-nav li {
+            margin-bottom: 10px;
+        }
+
+        .mobile-nav a {
+            color: var(--white);
+            text-decoration: none;
+            display: block;
+            padding: 12px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .mobile-nav a:hover {
+            background-color: var(--dark-red);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                gap: 15px;
+            }
+
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .auth-buttons {
+                gap: 10px;
+            }
+
+            .auth-buttons .btn {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 20px;
+            }
+
+            .auth-buttons .btn {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+        }
+
+        .page-header {
+            background: linear-gradient(rgba(194, 12, 12, 0.85), rgba(138, 10, 10, 0.9)), url('https://images.unsplash.com/photo-1579154204601-015dbf4a937f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-red);
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-red);
+            margin: 10px auto;
+        }
+
+        .eligibility-criteria {
+            margin-bottom: 60px;
+        }
+
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .criteria-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--primary-red);
+            transition: transform 0.3s ease;
+        }
+
+        .criteria-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .criteria-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-red);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .criteria-card ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .criteria-card li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .criteria-card li:before {
+            content: "•";
+            color: var(--primary-red);
+            font-weight: bold;
+            position: absolute;
+            left: 10px;
+        }
+
+        .eligibility-checker {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 60px;
+        }
+
+        .checker-form {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .form-section h4 {
+            color: var(--primary-red);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-red);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(194, 12, 12, 0.1);
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .radio-group input, .checkbox-group input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .radio-group label, .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        .btn-submit {
+            background-color: var(--primary-red);
+            color: var(--white);
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 4px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--dark-red);
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress {
+            height: 10px;
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .faq-section {
+            margin-bottom: 60px;
+        }
+
+        .accordion-item {
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .accordion-button {
+            background-color: var(--white);
+            color: var(--text-dark);
+            padding: 20px;
+            font-weight: 600;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-button:after {
+            content: '+';
+            font-weight: 900;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-button.active:after {
+            content: '-';
+        }
+
+        .accordion-button:hover {
+            background-color: #f9f9f9;
+        }
+
+        .accordion-button.active {
+            background-color: var(--light-bg);
+            color: var(--primary-red);
+        }
+
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background-color: var(--white);
+        }
+
+        .accordion-content.active {
+            padding: 20px;
+            max-height: 1000px;
+        }
+
+        footer {
+            background-color: var(--dark-red);
+            color: var(--white);
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--light-red);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary-red);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+            }
+
+            .eligibility-checker {
+                padding: 25px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        /* Medical Conditions Grid */
+        .medical-conditions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .condition-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Eligibility Result Styles */
+        .eligibility-success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            margin-top: 20px;
+        }
+
+        .eligibility-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+            margin-top: 20px;
+        }
+
+        .eligibility-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tint"></i>
+                    <h1>BloodBond</h1>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav">
+                    <ul>
+                        <li><a href="index.jsp">Home</a></li>
+                        <li><a href="eligibility.jsp">Eligibility</a></li>
+                        <li><a href="camps.jsp">Camps</a></li>
+                        <li><a href="credits.jsp">Credits</a></li>
+                        <li><a href="certificate.jsp">Certificate</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="login.jsp" class="btn btn-login">Login</a>
+                    <a href="register.jsp" class="btn btn-register">Register</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
+                    aria-controls="offcanvasMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Offcanvas Menu for Mobile -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <div class="offcanvas-title" id="offcanvasMenuLabel">
+                <i class="fas fa-tint"></i>
+                <h5 class="mb-0">BloodBond</h5>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="mobile-nav">
+                <li><a href="index.jsp">Home</a></li>
+                <li><a href="eligibility.jsp">Eligibility</a></li>
+                <li><a href="camps.jsp">Camps</a></li>
+                <li><a href="credits.jsp">Credits</a></li>
+                <li><a href="certificate.jsp">Certificate</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Blood Donation Eligibility</h1>
+            <p>Complete our comprehensive eligibility questionnaire to determine if you can donate blood</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Eligibility Criteria -->
+        <section class="eligibility-criteria">
+            <h2 class="section-title">Eligibility Requirements</h2>
+            <div class="criteria-grid">
+                <div class="criteria-card">
+                    <h3><i class="fas fa-user"></i> Basic Requirements</h3>
+                    <ul>
+                        <li>Age between 18 and 65 years</li>
+                        <li>Minimum weight of 50 kg (110 lbs)</li>
+                        <li>Good general health</li>
+                        <li>Normal blood pressure</li>
+                        <li>Hemoglobin level at least 12.5 g/dL</li>
+                    </ul>
+                </div>
+                <div class="criteria-card">
+                    <h3><i class="fas fa-heartbeat"></i> Health Conditions</h3>
+                    <ul>
+                        <li>No cold, flu, or infection symptoms</li>
+                        <li>No chronic illnesses like heart disease, kidney disease, etc.</li>
+                        <li>No history of hepatitis B or C</li>
+                        <li>No HIV/AIDS</li>
+                        <li>Not pregnant or breastfeeding</li>
+                    </ul>
+                </div>
+                <div class="criteria-card">
+                    <h3><i class="fas fa-calendar-alt"></i> Time-Based Restrictions</h3>
+                    <ul>
+                        <li>Wait 3 months after getting a tattoo or piercing</li>
+                        <li>Wait 6 months after major surgery</li>
+                        <li>Wait 12 months after getting a blood transfusion</li>
+                        <li>Wait 4 weeks after travel to malaria-endemic areas</li>
+                        <li>Wait 3 days after dental procedures</li>
+                    </ul>
+                </div>
+                <div class="criteria-card">
+                    <h3><i class="fas fa-pills"></i> Medication & Vaccinations</h3>
+                    <ul>
+                        <li>Not taking antibiotics for active infection</li>
+                        <li>No recent vaccinations (varies by type)</li>
+                        <li>Not on blood thinners like Warfarin</li>
+                        <li>No recent use of recreational drugs</li>
+                        <li>Not undergoing cancer treatment</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Eligibility Checker -->
+        <section class="eligibility-checker">
+            <h2 class="section-title">Complete Eligibility Questionnaire</h2>
+            <div class="progress-container">
+                <div class="progress">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 0%" id="progress-bar"></div>
+                </div>
+                <div class="progress-text">
+                    <span>Progress</span>
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+            
+            <div class="checker-form">
+                <form id="eligibility-form">
+                    <!-- Personal Information Section -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-user-circle"></i> Personal Information</h4>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="age">Age</label>
+                                    <input type="number" id="age" class="form-control" min="16" max="70" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="weight">Weight (kg)</label>
+                                    <input type="number" id="weight" class="form-control" min="30" max="150" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" class="form-control" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Health History Section -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-stethoscope"></i> Health History</h4>
+                        <div class="form-group">
+                            <label>Do you have or have you ever had any of the following conditions?</label>
+                            <div class="medical-conditions-grid">
+                                <div class="condition-item">
+                                    <input type="checkbox" id="condition-none" name="medicalConditions" value="none">
+                                    <label for="condition-none">None of the above</label>
+                                </div>
+                                <div class="condition-item">
+                                    <input type="checkbox" id="heart-disease" name="medicalConditions" value="heart-disease">
+                                    <label for="heart-disease">Heart disease or heart surgery</label>
+                                </div>
+                                <div class="condition-item">
+                                    <input type="checkbox" id="lung-disease" name="medicalConditions" value="lung-disease">
+                                    <label for="lung-disease">Chronic lung disease (asthma, COPD)</label>
+                                </div>
+                                <div class="condition-item">
+                                    <input type="checkbox" id="diabetes" name="medicalConditions" value="diabetes">
+                                    <label for="diabetes">Diabetes requiring insulin</label>
+                                </div>
+                                <div class="condition-item">
+                                    <input type="checkbox" id="hepatitis" name="medicalConditions" value="hepatitis">
+                                    <label for="hepatitis">Hepatitis B or C</label>
+                                </div>
+                                <div class="condition-item">
+                                    <input type="checkbox" id="hiv" name="medicalConditions" value="hiv">
+                                    <label for="hiv">HIV/AIDS</label>
+                                </div>
+                                <div class="condition-item">
+                                    <input type="checkbox" id="cancer" name="medicalConditions" value="cancer">
+                                    <label for="cancer">Cancer (except certain skin cancers)</label>
+                                </div>
+                                <div class="condition-item">
+                                    <input type="checkbox" id="bleeding-disorder" name="medicalConditions" value="bleeding-disorder">
+                                    <label for="bleeding-disorder">Bleeding disorder</label>
+                                </div>
+                                <div class="condition-item">
+                                    <input type="checkbox" id="kidney-disease" name="medicalConditions" value="kidney-disease">
+                                    <label for="kidney-disease">Chronic kidney disease</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Health Section -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-clipboard-check"></i> Recent Health Status</h4>
+                        <div class="form-group">
+                            <label>Are you currently experiencing any of the following?</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="fever">
+                                <label for="fever">Fever, cold, or flu symptoms</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="infection">
+                                <label for="infection">Active infection</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="fatigue">
+                                <label for="fatigue">Unexplained fatigue or weakness</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="pregnant">
+                                <label for="pregnant">Pregnancy (or possible pregnancy)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="breastfeeding">
+                                <label for="breastfeeding">Currently breastfeeding</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medications Section -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-pills"></i> Medications & Treatments</h4>
+                        <div class="form-group">
+                            <label>Are you currently taking any of the following medications?</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="antibiotics">
+                                <label for="antibiotics">Antibiotics</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="blood-thinners">
+                                <label for="blood-thinners">Blood thinners (Warfarin, Heparin, etc.)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="aspirin">
+                                <label for="aspirin">Aspirin (within 2 days)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="accutane">
+                                <label for="accutane">Accutane (Isotretinoin)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="propecia">
+                                <label for="propecia">Propecia (Finasteride)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="cancer-treatment">
+                                <label for="cancer-treatment">Cancer treatment drugs</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Have you received any vaccinations in the past 4 weeks?</label>
+                            <div class="radio-group">
+                                <input type="radio" id="vaccination-yes" name="vaccination" value="yes">
+                                <label for="vaccination-yes">Yes</label>
+                            </div>
+                            <div class="radio-group">
+                                <input type="radio" id="vaccination-no" name="vaccination" value="no">
+                                <label for="vaccination-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lifestyle Section -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-running"></i> Lifestyle & Travel</h4>
+                        <div class="form-group">
+                            <label>In the past 3 months, have you:</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="tattoo">
+                                <label for="tattoo">Gotten a tattoo or piercing</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="surgery">
+                                <label for="surgery">Had major surgery</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="dental-surgery">
+                                <label for="dental-surgery">Had dental surgery or extraction</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="acupuncture">
+                                <label for="acupuncture">Had acupuncture with non-disposable needles</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>In the past 12 months, have you:</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="blood-transfusion">
+                                <label for="blood-transfusion">Received a blood transfusion</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="organ-transplant">
+                                <label for="organ-transplant">Had an organ transplant</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="malaria-travel">
+                                <label for="malaria-travel">Traveled to a malaria-risk area</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Have you ever used intravenous drugs not prescribed by a doctor?</label>
+                            <div class="radio-group">
+                                <input type="radio" id="drugs-yes" name="drugs" value="yes">
+                                <label for="drugs-yes">Yes</label>
+                            </div>
+                            <div class="radio-group">
+                                <input type="radio" id="drugs-no" name="drugs" value="no">
+                                <label for="drugs-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Questions Section -->
+                    <div class="form-section">
+                        <h4><i class="fas fa-question-circle"></i> Additional Questions</h4>
+                        <div class="form-group">
+                            <label>Have you donated blood in the past 3 months?</label>
+                            <div class="radio-group">
+                                <input type="radio" id="recent-donation-yes" name="recent-donation" value="yes">
+                                <label for="recent-donation-yes">Yes</label>
+                            </div>
+                            <div class="radio-group">
+                                <input type="radio" id="recent-donation-no" name="recent-donation" value="no">
+                                <label for="recent-donation-no">No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Have you ever been deferred from donating blood before?</label>
+                            <div class="radio-group">
+                                <input type="radio" id="deferred-yes" name="deferred" value="yes">
+                                <label for="deferred-yes">Yes</label>
+                            </div>
+                            <div class="radio-group">
+                                <input type="radio" id="deferred-no" name="deferred" value="no">
+                                <label for="deferred-no">No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Do you have any reason to believe your blood may not be safe to give to another person?</label>
+                            <div class="radio-group">
+                                <input type="radio" id="unsafe-yes" name="unsafe" value="yes">
+                                <label for="unsafe-yes">Yes</label>
+                            </div>
+                            <div class="radio-group">
+                                <input type="radio" id="unsafe-no" name="unsafe" value="no">
+                                <label for="unsafe-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-submit" onclick="checkEligibility()">Check My Eligibility</button>
+                    
+                    <div id="eligibility-result" style="margin-top: 20px; display: none;">
+                        <!-- Result will be displayed here -->
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-button">How often can I donate blood?</button>
+                    <div class="accordion-content">
+                        <p>You can donate whole blood every 56 days (8 weeks). For platelet donations, you can donate every 7 days, up to 24 times a year.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <button class="accordion-button">Does donating blood hurt?</button>
+                    <div class="accordion-content">
+                        <p>You may feel a slight pinch when the needle is inserted, but the donation process itself is generally painless. Most donors compare it to a mild discomfort similar to a blood test.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <button class="accordion-button">How long does the donation process take?</button>
+                    <div class="accordion-content">
+                        <p>The entire process, from registration to post-donation refreshments, takes about 45-60 minutes. The actual blood donation typically takes only 8-10 minutes.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <button class="accordion-button">Can I donate if I have high blood pressure?</button>
+                    <div class="accordion-content">
+                        <p>Yes, as long as your blood pressure is below 180 systolic (first number) and below 100 diastolic (second number) at the time of donation. Medications for high blood pressure do not disqualify you.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <button class="accordion-button">What should I do before donating?</button>
+                    <div class="accordion-content">
+                        <p>Get a good night's sleep, eat a healthy meal before your donation, drink plenty of fluids, and avoid fatty foods. Also, bring a valid ID with you.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>BloodBond</h3>
+                    <p>Connecting donars, hospitals, and recipients to ensure no one dies due to lack of blood.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.jsp">Home</a></li>
+                        <li><a href="eligibility.jsp">Eligibility Check</a></li>
+                        <li><a href="camps.jsp">Donation Camps</a></li>
+                        <li><a href="credits.jsp">Blood Credits</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Donation Process</a></li>
+                        <li><a href="#">Blood Types</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Health Street, Medical City</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+                        <li><i class="fas fa-envelope"></i> info@bloodbond.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 BloodBond. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Track form progress
+        const form = document.getElementById('eligibility-form');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        
+        function updateProgress() {
+            const formInputs = form.querySelectorAll('input, select');
+            let completed = 0;
+            
+            formInputs.forEach(input => {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    const name = input.name;
+                    if (name) {
+                        const group = form.querySelectorAll(`input[name="${name}"]`);
+                        let groupCompleted = false;
+                        group.forEach(radio => {
+                            if (radio.checked) groupCompleted = true;
+                        });
+                        if (groupCompleted) completed++;
+                    } else if (input.checked) {
+                        completed++;
+                    }
+                } else if (input.value.trim() !== '') {
+                    completed++;
+                }
+            });
+            
+            const total = formInputs.length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            progressBar.style.width = `${percentage}%`;
+            progressText.textContent = `${percentage}%`;
+        }
+        
+        form.addEventListener('change', updateProgress);
+        form.addEventListener('input', updateProgress);
+        updateProgress();
+
+        // Accordion functionality
+        document.querySelectorAll('.accordion-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                button.classList.toggle('active');
+                content.classList.toggle('active');
+                
+                document.querySelectorAll('.accordion-button').forEach(otherButton => {
+                    if (otherButton !== button) {
+                        otherButton.classList.remove('active');
+                        otherButton.nextElementSibling.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Medical Conditions - if "none" is checked, uncheck others
+        document.getElementById('condition-none').addEventListener('change', function() {
+            if (this.checked) {
+                document.querySelectorAll('input[name="medicalConditions"]:not(#condition-none)').forEach(cb => {
+                    cb.checked = false;
+                });
+            }
+        });
+
+        // If any other condition is checked, uncheck "none"
+        document.querySelectorAll('input[name="medicalConditions"]:not(#condition-none)').forEach(cb => {
+            cb.addEventListener('change', function() {
+                if (this.checked) {
+                    document.getElementById('condition-none').checked = false;
+                }
+            });
+        });
+
+        // Eligibility checker functionality - FIXED VERSION
+        function checkEligibility() {
+            // Get basic information
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseInt(document.getElementById('weight').value);
+            const gender = document.getElementById('gender').value;
+            
+            // Check if "none" is selected for medical conditions
+            const noneChecked = document.getElementById('condition-none').checked;
+            
+            // Only check other conditions if "none" is not selected
+            const hasMedicalConditions = !noneChecked && (
+                document.getElementById('heart-disease').checked ||
+                document.getElementById('lung-disease').checked ||
+                document.getElementById('diabetes').checked ||
+                document.getElementById('hepatitis').checked ||
+                document.getElementById('hiv').checked ||
+                document.getElementById('cancer').checked ||
+                document.getElementById('bleeding-disorder').checked ||
+                document.getElementById('kidney-disease').checked
+            );
+            
+            // Get current health status
+            const hasCurrentHealthIssues = 
+                document.getElementById('fever').checked ||
+                document.getElementById('infection').checked ||
+                document.getElementById('fatigue').checked;
+            
+            const isPregnant = document.getElementById('pregnant').checked;
+            const isBreastfeeding = document.getElementById('breastfeeding').checked;
+            
+            // Get medication status
+            const hasMedicationIssues = 
+                document.getElementById('antibiotics').checked ||
+                document.getElementById('blood-thinners').checked ||
+                document.getElementById('accutane').checked ||
+                document.getElementById('propecia').checked ||
+                document.getElementById('cancer-treatment').checked;
+            
+            // Aspirin is usually OK for whole blood donation
+            const hasAspirin = document.getElementById('aspirin').checked;
+            
+            // Get vaccination status
+            const vaccination = document.querySelector('input[name="vaccination"]:checked');
+            const hasRecentVaccination = vaccination ? vaccination.value === 'yes' : false;
+            
+            // Get lifestyle factors
+            const hasRecentProcedures = 
+                document.getElementById('tattoo').checked ||
+                document.getElementById('surgery').checked ||
+                document.getElementById('dental-surgery').checked ||
+                document.getElementById('acupuncture').checked;
+            
+            const hasRecentTransfusions = 
+                document.getElementById('blood-transfusion').checked ||
+                document.getElementById('organ-transplant').checked;
+            
+            const hasMalariaTravel = document.getElementById('malaria-travel').checked;
+            
+            // Get drug use
+            const drugs = document.querySelector('input[name="drugs"]:checked');
+            const hasDrugUse = drugs ? drugs.value === 'yes' : false;
+            
+            // Get additional factors
+            const recentDonation = document.querySelector('input[name="recent-donation"]:checked');
+            const hasRecentDonation = recentDonation ? recentDonation.value === 'yes' : false;
+            
+            const deferred = document.querySelector('input[name="deferred"]:checked');
+            const wasDeferred = deferred ? deferred.value === 'yes' : false;
+            
+            const unsafe = document.querySelector('input[name="unsafe"]:checked');
+            const feelsUnsafe = unsafe ? unsafe.value === 'yes' : false;
+            
+            // Eligibility assessment
+            let eligible = true;
+            let reasons = [];
+            let warnings = [];
+            
+            // Check basic requirements
+            if (isNaN(age)) {
+                alert("Please enter your age");
+                return;
+            }
+            
+            if (isNaN(weight)) {
+                alert("Please enter your weight");
+                return;
+            }
+            
+            if (age < 18 || age > 65) {
+                eligible = false;
+                reasons.push("You must be between 18 and 65 years old to donate blood.");
+            }
+            
+            if (weight < 50) {
+                eligible = false;
+                reasons.push("You must weigh at least 50 kg (110 lbs) to donate blood.");
+            }
+            
+            // Check health conditions
+            if (hasMedicalConditions) {
+                eligible = false;
+                reasons.push("Certain medical conditions may prevent you from donating blood.");
+            }
+            
+            // Check current health
+            if (hasCurrentHealthIssues) {
+                eligible = false;
+                reasons.push("You should be in good health on the day of donation without fever, infection, or unexplained fatigue.");
+            }
+            
+            // Check pregnancy and breastfeeding (only for females)
+            if (gender === 'female') {
+                if (isPregnant) {
+                    eligible = false;
+                    reasons.push("Pregnant individuals are not eligible to donate blood.");
+                }
+                
+                if (isBreastfeeding) {
+                    warnings.push("While breastfeeding doesn't automatically disqualify you, we recommend waiting until 6 months after delivery to donate.");
+                }
+            }
+            
+            // Check medications
+            if (hasMedicationIssues) {
+                eligible = false;
+                reasons.push("Certain medications may prevent blood donation.");
+            }
+            
+            if (hasAspirin) {
+                warnings.push("Aspirin use within 2 days may affect platelet donation eligibility but not whole blood donation.");
+            }
+            
+            // Check vaccinations (most are OK, just need to wait)
+            if (hasRecentVaccination) {
+                warnings.push("Recent vaccinations may require a waiting period. Please check with our staff about specific vaccination types.");
+            }
+            
+            // Check recent procedures
+            if (hasRecentProcedures) {
+                eligible = false;
+                reasons.push("Recent procedures require a waiting period before donation (typically 3-12 months).");
+            }
+            
+            // Check transfusions and transplants
+            if (hasRecentTransfusions) {
+                eligible = false;
+                reasons.push("Recent blood transfusion or organ transplant requires a waiting period before donation.");
+            }
+            
+            // Check travel
+            if (hasMalariaTravel) {
+                eligible = false;
+                reasons.push("Travel to malaria-risk areas requires a waiting period before donation.");
+            }
+            
+            // Check drug use
+            if (hasDrugUse) {
+                eligible = false;
+                reasons.push("History of intravenous drug use prevents blood donation.");
+            }
+            
+            // Check recent donation
+            if (hasRecentDonation) {
+                warnings.push("If you've donated blood recently, you must wait at least 56 days before donating again.");
+            }
+            
+            // Check previous deferral
+            if (wasDeferred) {
+                warnings.push("If you've been deferred before, please check with our staff about your specific situation.");
+            }
+            
+            // Check safety concern
+            if (feelsUnsafe) {
+                eligible = false;
+                reasons.push("If you believe your blood may not be safe, please do not donate.");
+            }
+            
+            // Display result
+            const resultDiv = document.getElementById('eligibility-result');
+            resultDiv.style.display = 'block';
+            
+            if (eligible) {
+                let resultHTML = '<div style="background-color: #d4edda; color: #155724; padding: 20px; border-radius: 4px; border: 1px solid #c3e6cb;">';
+                resultHTML += '<h4 style="margin-top: 0; color: #155724;"><i class="fas fa-check-circle"></i> You appear to be eligible to donate blood!</h4>';
+                resultHTML += '<p>Based on the information provided, you meet the basic requirements for blood donation. Please note that final eligibility will be determined by our medical staff at the donation center.</p>';
+                
+                if (warnings.length > 0) {
+                    resultHTML += '<div style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; margin-top: 15px;">';
+                    resultHTML += '<h5 style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> Important Notes:</h5><ul>';
+                    warnings.forEach(warning => resultHTML += `<li>${warning}</li>`);
+                    resultHTML += '</ul></div>';
+                }
+                
+                resultHTML += '<div style="margin-top: 20px;">';
+                resultHTML += '<a href="camps.jsp" class="btn" style="background-color: var(--primary-red); color: white; margin-right: 10px;">Find Donation Camps</a>';
+                resultHTML += '</div></div>';
+                
+                resultDiv.innerHTML = resultHTML;
+            } else {
+                let resultHTML = '<div style="background-color: #f8d7da; color: #721c24; padding: 20px; border-radius: 4px; border: 1px solid #f5c6cb;">';
+                resultHTML += '<h4 style="margin-top: 0; color: #721c24;"><i class="fas fa-exclamation-triangle"></i> You may not be eligible to donate blood at this time.</h4>';
+                resultHTML += '<p>Based on the information provided, you do not meet all the eligibility requirements. Reasons may include:</p><ul>';
+                reasons.forEach(reason => resultHTML += `<li>${reason}</li>`);
+                resultHTML += '</ul>';
+                
+                if (warnings.length > 0) {
+                    resultHTML += '<div style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; margin-top: 15px;">';
+                    resultHTML += '<h5 style="margin-top: 0;"><i class="fas fa-info-circle"></i> Additional Information:</h5><ul>';
+                    warnings.forEach(warning => resultHTML += `<li>${warning}</li>`);
+                    resultHTML += '</ul></div>';
+                }
+                
+                resultHTML += '<p style="margin-top: 15px;">If you believe this is an error or have questions about specific eligibility criteria, please contact us for more information.</p>';
+                resultHTML += '<a href="#" class="btn" style="background-color: var(--primary-red); color: white; margin-top: 10px;">Contact Us</a>';
+                resultHTML += '</div>';
+                
+                resultDiv.innerHTML = resultHTML;
+            }
+            
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
